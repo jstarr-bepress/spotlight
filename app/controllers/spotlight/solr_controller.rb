@@ -69,5 +69,9 @@ module Spotlight
 
       sidecar
     end
+
+    def repository
+      @repository ||= Blacklight::Solr::Repository.new(blacklight_config)
+    end
   end
 end
