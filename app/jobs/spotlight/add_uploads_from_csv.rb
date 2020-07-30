@@ -12,16 +12,21 @@ module Spotlight
     end
 
     def perform(csv_data, exhibit, _user)
+      Rails.logger.info "HACK AddUploadsFromCSV"
       encoded_csv(csv_data).each do |row|
+        Rails.logger.info "HACK row: #{row}"
         url = row.delete('url')
+        Rails.logger.info "HACK url: #{url}"
         next unless url.present?
-
+        Rails.logger.info "HACK url present: #{url.present?}"
         resource = Spotlight::Resources::Upload.new(
           data: row,
           exhibit: exhibit
         )
         resource.build_upload(remote_image_url: url) unless url == '~'
+        Rails.logger.info "HACK url present: before resource.save_and_index"
         resource.save_and_index
+        Rails.logger.info "HACK url present: after resource.save_and_index"
       end
     end
 
